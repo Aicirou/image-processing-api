@@ -1,9 +1,9 @@
 import express, { json } from "express"
 import { config } from "dotenv"
 
-import pool from "../config/db.js"
-import createRequestTable from "../tables/Request.js"
-import Routes from "../routes/index.js"
+import pool from "./config/db.js"
+import createRequestTable from "./tables/Request.js"
+import Routes from "./routes/index.js"
 
 // Load environment variables
 config()

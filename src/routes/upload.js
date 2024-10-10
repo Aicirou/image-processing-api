@@ -8,7 +8,7 @@ import path from "path"
 import fs from "fs"
 
 const router = express.Router()
-const upload = multer({ dest: "uploads/" })
+const upload = multer({ storage: multer.memoryStorage() })
 
 router.post("/upload", upload.single("csv"), async (req, res) => {
   try {
@@ -17,7 +17,7 @@ router.post("/upload", upload.single("csv"), async (req, res) => {
     }
 
     const requestId = uuidv4()
-    const csvData = await processCSV(req.file.path)
+    const csvData = await processCSV(req.file.buffer)
 
     //insert request into database
     try {

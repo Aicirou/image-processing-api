@@ -1,34 +1,25 @@
-import fs from "fs"
 import { parse } from "csv-parse"
 
-export async function processCSV(filePath) {
+export async function processCSV(buffer) {
   return new Promise((resolve, reject) => {
     const results = []
-    fs.createReadStream(filePath)
-      .pipe(parse({ columns: true, trim: true }))
-      .on("data", (data) => {
-        results.push({
-          serialNumber: data["S. No."],
-          productName: data["Product Name"],
-          inputImageUrls: data["Input Image Urls"]
-            .split(",")
-            .map((url) => url.trim()),
-        })
-      })
-      .on("end", () => {
-        //remove the file from the uploads folder
-        fs.unlink(filePath, (error) => {
-          if (error) {
-            console.error("Error deleting CSV file:", error)
-          }
-        })
+    const parser = parse({ columns: true, trim: true })
 
-        //resolve the promise with the results
-        resolve(results)
+    parser.on("data", (data) => {
+      results.push({
+        serialNumber: data["S. No."],
+        productName: data["Product Name"],
+        inputImageUrls: data["Input Image Urls"]
+          .split(",")
+          .map((url) => url.trim()),
       })
-      .on("error", (error) => {
-        console.error("Error processing CSV:", error)
-        reject(error)
-      })
+    })
+
+    parser.on("end", () => resolve(results))
+    parser.on("error", (error) => reject(error))
+
+    // Process CSV from buffer
+    parser.write(buffer)
+    parser.end()
   })
 }
