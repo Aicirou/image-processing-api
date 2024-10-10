@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #444;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            justify-content: space-between;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button {
+            margin-left: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .status-container,
+        .image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .status {
+            font-size: 1.2em;
+            color: green;
+        }
+
+        .error {
+            font-size: 1.2em;
+            color: red;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .image-container img {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            max-width: 30%;
+            height: auto;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Request Status</h1>
+    <form id="statusForm">
+        <div class="form-group">
+            <label for="requestId">Enter Request ID:</label>
+            <input type="text" id="requestId" name="requestId" required>
+            <button type="submit">Check Status</button>
+        </div>
+    </form>
+    <div class="status-container" id="statusContainer"></div>
+    <div class="image-container" id="imageContainer"></div>
+
+    <script>
+        document.getElementById('statusForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const requestId = document.getElementById('requestId').value;
+            const statusContainer = document.getElementById('statusContainer');
+            statusContainer.innerHTML = '';
+            const imageContainer = document.getElementById('imageContainer')
+            imageContainer.innerHTML = '';
+
+            try {
+                if (!requestId || requestId.trim() === '') {
+                    throw new Error('Invalid Request ID');
+                }
+
+                const response = await fetch(`http://localhost:3000/api/status/${requestId}`);
+                const data = await response.json();
+
+                const imagesRes = await fetch(`http://localhost:3000/api/displayImages/${requestId}`)
+                const imagesData = await imagesRes.json();
+
+                if (response.ok) {
+                    statusContainer.innerHTML = `<p class= "status" > Status: ${data.status}</p>`;
+
+                    if (data.status == "completed") {
+                        imageContainer.innerHTML = `${imagesData.htmlContent}`
+                    }
+                } else {
+                    statusContainer.innerHTML = `<p class= "error" > ${data.error}</p>`;
+                }
+            } catch (error) {
+                statusContainer.innerHTML = `<p class= "error" > ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
