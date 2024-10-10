@@ -132,10 +132,10 @@
                     throw new Error('Invalid Request ID');
                 }
 
-                const response = await fetch(`http://localhost:3000/api/status/${requestId}`);
+                const response = await fetch(`https://image-processing-api.netlify.app/api/status/${requestId}`);
                 const data = await response.json();
 
-                const imagesRes = await fetch(`http://localhost:3000/api/displayImages/${requestId}`)
+                const imagesRes = await fetch(`https://image-processing-api.netlify.app/api/displayImages/${requestId}`)
                 const imagesData = await imagesRes.json();
 
                 if (response.ok) {
