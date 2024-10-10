@@ -1,9 +1,9 @@
 import express, { json } from "express"
 import { config } from "dotenv"
 
-import pool from "./src/config/db.js"
-import createRequestTable from "./src/tables/Request.js"
-import Routes from "./src/routes/index.js"
+import pool from "../config/db.js"
+import createRequestTable from "../tables/Request.js"
+import Routes from "../routes/index.js"
 
 // Load environment variables
 config()
@@ -31,3 +31,5 @@ app.use(Routes)
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}/`)
 })
+
+export default app
