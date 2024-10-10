@@ -9,7 +9,6 @@ import Routes from "./src/routes/index.js"
 config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
 
 // Connect to the database
 pool.connect((err) => {
@@ -27,7 +26,6 @@ app.use(json())
 
 app.use(Routes)
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}/`)
-})
+// Remove `app.listen()`
+// Export the app for serverless function handling
+export default app
