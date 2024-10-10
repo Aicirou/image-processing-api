@@ -1,6 +1,6 @@
-# Image Processing System
+# Image Processing API
 
-This project is an image processing system that allows users to upload CSV files containing image URLs, processes the images, and provides status updates on the processing.
+This project is an image processing api that allows users to upload CSV files containing image URLs, processes the images, and provides status updates on the processing.
 
 ## Table of Contents
 
@@ -16,8 +16,8 @@ This project is an image processing system that allows users to upload CSV files
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/image-processing-system.git
-   cd image-processing-system
+   git clone https://github.com/Aicirou/image-processing-api.git
+   cd image-processing-api
    ```
 
 2. **Install dependencies:**
