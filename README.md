@@ -2,6 +2,8 @@
 
 This project is an image processing api that allows users to upload CSV files containing image URLs, processes the images, and provides status updates on the processing.
 
+![alt text](image_status.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
