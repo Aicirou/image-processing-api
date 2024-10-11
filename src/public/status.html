@@ -132,10 +132,13 @@
                     throw new Error('Invalid Request ID');
                 }
 
-                const response = await fetch(`https://image-processing-api-blond.vercel.app/api/status/${requestId}`);
+                // Get the current website URL dynamically
+                const baseUrl = window.location.origin;
+
+                const response = await fetch(`${baseUrl}/api/status/${requestId}`);
                 const data = await response.json();
 
-                const imagesRes = await fetch(`https://image-processing-api-blond.vercel.app/api/displayImages/${requestId}`)
+                const imagesRes = await fetch(`${baseUrl}/api/displayImages/${requestId}`)
                 const imagesData = await imagesRes.json();
 
                 if (response.ok) {

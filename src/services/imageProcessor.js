@@ -63,7 +63,7 @@ export async function processImages(requestId) {
     )
 
     // Trigger webhook
-    await triggerWebhook(requestId)
+    // await triggerWebhook(requestId)
   } catch (error) {
     console.error(`Error processing images for request ${requestId}:`, error)
     await pool.query(
@@ -86,21 +86,21 @@ async function processImage(inputUrl) {
 
   // Convert binary data to a buffer
   const buffer = Buffer.from(response.data, "binary")
-  // const processedBuffer = await sharp(buffer).jpeg({ quality: 50 }).toBuffer()
+  const processedBuffer = await sharp(buffer).jpeg({ quality: 50 }).toBuffer()
   // In a real-world scenario, you would upload the processed image to a storage service
   // and return the URL. For this example, we'll just return a placeholder URL.
-  const base64Image = buffer.toString("base64")
+  const base64Image = processedBuffer.toString("base64")
 
   return `data:${mimeType};base64,${base64Image}`
 }
 
-async function triggerWebhook(requestId) {
-  const webhookUrl = process.env.WEBHOOK_URL
-  if (webhookUrl) {
-    try {
-      await axios.post(webhookUrl, { requestId, status: "completed" })
-    } catch (error) {
-      console.error(`Error triggering webhook for request ${requestId}:`, error)
-    }
-  }
-}
+// async function triggerWebhook(requestId) {
+//   const webhookUrl = process.env.WEBHOOK_URL
+//   if (webhookUrl) {
+//     try {
+//       await axios.post(webhookUrl, { requestId, status: "completed" })
+//     } catch (error) {
+//       console.error(`Error triggering webhook for request ${requestId}:`, error)
+//     }
+//   }
+// }
